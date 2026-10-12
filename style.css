@@ -1,0 +1,671 @@
+/* =========================================================
+   1. BASE VARIABLES & RESET
+   ========================================================= */
+:root {
+  --bg-dark: #09090b;
+  --bg-surface: #121215;
+  --bg-card: #18181c;
+  --text-main: #f4f4f6;
+  --text-muted: #a1a1aa;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --accent: #ffffff;
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: var(--bg-dark);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 100px 0;
+  border-top: 1px solid var(--border-color);
+}
+
+/* =========================================================
+   2. NAVIGATION BAR
+   ========================================================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 22px 0;
+  transition:
+    background-color 0.3s ease,
+    padding 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(9, 9, 11, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-container {
+  width: 92%;
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-link {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-main);
+}
+
+.nav-cta {
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--text-main);
+}
+
+.nav-cta:hover {
+  background-color: var(--text-main);
+  color: var(--bg-dark);
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mobile-menu-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-main);
+}
+
+/* =========================================================
+   3. FULL-SCREEN HERO SECTION & OVERLAY
+   ========================================================= */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.hero-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 1s ease-in-out,
+    transform 6s ease-out;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---> HERO OVERLAY: Change 0.22 below to make the photo brighter (e.g. 0.1) or darker (e.g. 0.5) <--- */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.22) 50%, rgba(9, 9, 11, 0.78) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 0 20px;
+  max-width: 900px;
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.05;
+  margin-bottom: 18px;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  letter-spacing: 0.35em;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 16px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   4. BUTTONS
+   ========================================================= */
+.btn {
+  display: inline-block;
+  min-width: 180px;
+  text-align: center;
+  padding: 14px 28px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background-color: #ffffff;
+  color: #09090b;
+}
+
+.btn-primary:hover {
+  background-color: #e4e4e7;
+}
+
+.btn-outline {
+  background-color: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.btn-outline:hover {
+  background-color: #ffffff;
+  color: #09090b;
+}
+
+.btn-small {
+  padding: 10px 16px;
+  font-size: 0.72rem;
+}
+
+.btn-full {
+  width: 100%;
+  text-align: center;
+}
+
+/* =========================================================
+   5. HERO FOOTER & SLIDE SWITCHER
+   ========================================================= */
+.hero-footer {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.scroll-indicator:hover {
+  color: #ffffff;
+  transform: translateY(3px);
+}
+
+.scroll-arrow {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* =========================================================
+   6. PORTFOLIO GALLERY
+   ========================================================= */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.section-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--text-main);
+  color: var(--bg-dark);
+  border-color: var(--text-main);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.gallery-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.gallery-card.hidden {
+  display: none;
+}
+
+.gallery-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.card-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-card:hover .card-image-wrap img {
+  transform: scale(1.04);
+}
+
+.card-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-hover-overlay span {
+  padding: 10px 20px;
+  border: 1px solid #fff;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.gallery-card:hover .card-hover-overlay {
+  opacity: 1;
+}
+
+.card-info {
+  padding: 20px 24px;
+}
+
+.card-info h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.card-info p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   7. ABOUT & CONTACT SECTIONS
+   ========================================================= */
+.about-section {
+  background-color: var(--bg-surface);
+}
+
+.about-grid,
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  color: #d4d4d8;
+  margin-bottom: 32px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.contact-desc {
+  color: var(--text-muted);
+  margin: 16px 0 28px;
+}
+
+.email-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+}
+
+.email-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.email-address {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  word-break: break-all;
+}
+
+.email-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.contact-form {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 32px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #ffffff;
+}
+
+.form-feedback {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #a7f3d0;
+}
+
+/* =========================================================
+   8. FOOTER & LIGHTBOX
+   ========================================================= */
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-brand {
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  color: var(--text-main);
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 88vh;
+  text-align: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  border: 1px solid var(--border-color);
+}
+
+.lightbox-caption {
+  margin-top: 14px;
+}
+
+/* =========================================================
+   9. MOBILE RESPONSIVENESS
+   ========================================================= */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(9, 9, 11, 0.96);
+    flex-direction: column;
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .gallery-grid,
+  .about-grid,
+  .contact-grid,
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+}
