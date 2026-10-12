@@ -1,4 +1,4 @@
-## Hi there 👋
+This is a project to show my portfolio of photographs and the world masters of different countries that I have studied. 
 
 <!--
 **MarkedNoir/markednoir** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
