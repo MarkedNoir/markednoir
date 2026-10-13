@@ -1,15 +1,28 @@
 // =========================================================
-// 1. NAVBAR SCROLL & MOBILE MENU
+// 1. NAVBAR SCROLL, MOBILE MENU & SCROLL INDICATOR
 // =========================================================
 const navbar = document.getElementById("navbar");
 const mobileMenuBtn = document.getElementById("mobileMenuBtn");
 const navLinks = document.getElementById("navLinks");
+const heroFooter = document.querySelector(".hero-footer"); // Grabs the scroll arrow container
 
 window.addEventListener("scroll", () => {
+  // Navbar background change
   if (window.scrollY > 40) {
     navbar.classList.add("scrolled");
   } else {
     navbar.classList.remove("scrolled");
+  }
+
+  // Fade out scroll indicator arrow
+  if (heroFooter) {
+    if (window.scrollY > 100) {
+      heroFooter.style.opacity = "0";
+      heroFooter.style.pointerEvents = "none"; // Prevents clicking when invisible
+    } else {
+      heroFooter.style.opacity = "1";
+      heroFooter.style.pointerEvents = "auto";
+    }
   }
 });
 
