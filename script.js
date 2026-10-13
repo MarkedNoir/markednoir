@@ -79,12 +79,26 @@ galleryCards.forEach((card) => {
   });
 });
 
+// 1. Close when clicking the 'X' button
 lightboxClose.addEventListener("click", () => {
   lightbox.classList.remove("open");
 });
 
+// 2. Close when clicking the dark background outside the photo
 lightbox.addEventListener("click", (event) => {
   if (event.target === lightbox) {
+    lightbox.classList.remove("open");
+  }
+});
+
+// 3. DO NOTHING if the user clicks the photo (allows long-press to save)
+lightboxImg.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+// 4. Close when pressing the Escape key
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && lightbox.classList.contains("open")) {
     lightbox.classList.remove("open");
   }
 });
@@ -120,6 +134,19 @@ contactForm.addEventListener("submit", (event) => {
   // Opens user's email program addressed to markednoir@gmail.com
   window.location.href = `mailto:${STUDIO_EMAIL}?subject=${subject}&body=${body}`;
   formFeedback.textContent = "Opening your email app addressed to markednoir@gmail.com...";
+});
+
+// =========================================================
+// 6. CLOSE MOBILE MENU ON OUTSIDE CLICK
+// =========================================================
+document.addEventListener("click", (event) => {
+  // First, check if the menu is actually open
+  if (navLinks.classList.contains("open")) {
+    // Check if the click happened OUTSIDE the menu AND outside the hamburger button
+    if (!navLinks.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+      navLinks.classList.remove("open");
+    }
+  }
 });
 
 // =========================================================

@@ -644,35 +644,54 @@ a {
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 0; /* Removed padding to allow edge-to-edge expansion */
 }
 
 .lightbox.open {
   display: flex;
 }
 
-.lightbox-close {
-  position: absolute;
-  top: 24px;
-  right: 32px;
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 2.5rem;
-  cursor: pointer;
-}
-
 .lightbox-content {
-  max-width: 90vw;
-  max-height: 88vh;
+  position: relative; /* Crucial: pins the button to the image */
+  max-width: 95vw;
   text-align: center;
 }
 
 .lightbox-content img {
-  max-width: 100%;
-  max-height: 78vh;
+  display: block;
+  max-width: 95vw;
+  max-height: 90vh; /* Huge image, with a little room left for caption */
   object-fit: contain;
-  border: 1px solid var(--border-color);
+  margin: 0 auto;
+}
+
+/* The New High-Contrast Close Button */
+.lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 48px; /* Big enough for older fingers! */
+  height: 48px;
+  border-radius: 50%;
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #ffffff; /* Ensures it never blends into a dark photo */
+  font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background-color: #222222;
+  transform: scale(1.05);
 }
 
 .lightbox-caption {
@@ -721,6 +740,24 @@ a {
   .contact-grid,
   .stats-row {
     grid-template-columns: 1fr;
+  }
+
+  /* Unify all mobile menu links (Ethos, Gallery, Inquire) */
+  .nav-link,
+  .nav-cta {
+    color: var(--text-muted); /* Both start muted grey */
+    border: 1px solid transparent; /* Invisible box waiting to appear */
+    padding: 10px 24px; /* Gives the box a nice clickable shape */
+    background-color: transparent;
+    transition: all 0.2s ease;
+  }
+
+  /* What happens when they are tapped/hovered */
+  .nav-link:hover,
+  .nav-cta:hover {
+    color: var(--text-main); /* Both turn white */
+    border-color: rgba(255, 255, 255, 0.35); /* Both get the white outline */
+    background-color: transparent;
   }
 }
 
