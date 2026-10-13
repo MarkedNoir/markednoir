@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Rounded tile background (neutral charcoal to frame both black and white) -->
+  <rect width="64" height="64" rx="14" fill="#22252a" stroke="#3a3f47" stroke-width="2"/>
+
+  <!-- Left half of 'M': Pure Black (#000000) -->
+  <!-- Coordinates split precisely along x = 32 -->
+  <path d="M 12 50 L 12 14 L 23 14 L 32 30.5 L 32 40 L 23 26 L 20 26 L 20 50 Z" fill="#000000"/>
+
+  <!-- Right half of 'M': Pure White (#ffffff) -->
+  <path d="M 52 50 L 52 14 L 41 14 L 32 30.5 L 32 40 L 41 26 L 44 26 L 44 50 Z" fill="#ffffff"/>
+</svg>

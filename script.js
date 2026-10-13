@@ -108,3 +108,24 @@ contactForm.addEventListener("submit", (event) => {
   window.location.href = `mailto:${STUDIO_EMAIL}?subject=${subject}&body=${body}`;
   formFeedback.textContent = "Opening your email app addressed to markednoir@gmail.com...";
 });
+
+// =========================================================
+// 5. DELETE WHEN PORTRAITS ARE AVAILABLE HERE AND CSS AND HTML
+// =========================================================
+
+const portraitsBtn = document.getElementById("portraitsBtn");
+const toast = document.getElementById("toastNotification");
+let toastTimeout;
+
+portraitsBtn.addEventListener("click", () => {
+  // Clear any active dismiss timer
+  clearTimeout(toastTimeout);
+
+  // Show the toast
+  toast.classList.add("is-visible");
+
+  // Auto-hide after 3 seconds
+  toastTimeout = setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 3000);
+});

@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marked Noir | Photography Portfolio</title>
+    <title>Marked Noir | Photography</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+
+    <link rel="icon" type="images/svg+xml" href="images/favicon.svg" />
 
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css" />
@@ -45,18 +47,24 @@
 
       <!-- Centered Bold Text -->
       <div class="hero-content">
-        <p class="hero-eyebrow">THE PHOTOGRAPHIC STUDIES OF</p>
+        <p class="hero-eyebrow">Behind The Glass</p>
         <h1 class="hero-title">Marked Noir</h1>
-        <p class="hero-subtitle">Sometimes, there's something more.</p>
+        <p class="hero-subtitle">There's something more.</p>
         <div class="hero-actions">
           <a href="#gallery" class="btn btn-primary">Gallery</a>
-          <a href="#" class="btn btn-outline">Portraits</a>
+          <button type="button" id="portraitsBtn" class="btn btn-outline">Portraits</button>
         </div>
       </div>
 
+      <!-- Toast Container DELETE WHEN PORTRAITS ARE AVAILABLE -->
+      <div id="toastNotification" class="toast" role="status" aria-live="polite">Portraits Arriving Soon</div>
+
       <!-- Bottom Bar: Slide Switcher Buttons -->
       <div class="hero-footer">
-        <a href="#gallery" class="scroll-indicator">Scroll ↓</a>
+        <a href="#gallery" class="scroll-indicator" aria-label="Scroll to gallery">
+          <span class="scroll-text">Scroll</span>
+          <span class="scroll-chevron"></span>
+        </a>
       </div>
     </section>
 
@@ -75,14 +83,19 @@
             <button class="filter-btn" data-filter="urban">Cities & Towns</button>
             <button class="filter-btn" data-filter="atmosphere">Atmosphere</button>
             <button class="filter-btn" data-filter="conversations">Conversations</button>
-            <button class="filter-btn" data-filter="movement">movement</button>
+            <button class="filter-btn" data-filter="movement">Movement</button>
           </div>
         </div>
 
         <!-- Gallery Grid (Edit or add more photo cards right here in HTML) -->
         <div class="gallery-grid" id="galleryGrid">
           <!-- Card 1 -->
-          <article class="gallery-card" data-category="urban" data-src="./images/cologne-central.jpg" data-title="Cologne Central" data-meta="50mm · f/1.8 · Urban Transit Study">
+          <article
+            class="gallery-card"
+            data-category="urban"
+            data-src="./images/cologne-central.jpg"
+            data-title="Through the glass: Cologne Central in the rain"
+            data-meta="City Life">
             <div class="card-image-wrap">
               <img src="./images/cologne-central.jpg" alt="Cologne Central" loading="lazy" />
               <div class="card-hover-overlay">
@@ -90,26 +103,41 @@
               </div>
             </div>
             <div class="card-info">
-              <h3>Cologne Central</h3>
-              <p>Streaming Commuters</p>
+              <h3>Cologne Central through the glass</h3>
             </div>
           </article>
 
-          <article class="gallery-card" data-category="urban" data-src=".\images\tram-at-night.jpg" data-title="Tram At Night" data-meta="Urban Transit">
+          <article class="gallery-card" data-category="urban" data-src="./images/tram-at-night.jpg" data-title="Last Tram to Neumarkt" data-meta="City Life">
             <div class="card-image-wrap">
-              <img src=".\images\tram-at-night.jpg" alt="Cologne Strassenbahn" loading="lazy" />
+              <img src="./images/tram-at-night.jpg" alt="Cologne Strassenbahn" loading="lazy" />
               <div class="card-hover-overlay">
                 <span>View Full Frame</span>
               </div>
             </div>
             <div class="card-info">
-              <h3>Cologne Strassenbahn</h3>
-              <p>Last Commutes</p>
+              <h3>Last tram to Neumarkt</h3>
+            </div>
+          </article>
+
+          <article
+            class="gallery-card"
+            data-category="atmosphere"
+            data-src="./images/a-walk-in-the-park.jpg"
+            data-title="Cologne City Parks: Past in the present"
+            data-meta="Suburbia">
+            <div class="card-image-wrap">
+              <img src="./images/a-walk-in-the-park.jpg" alt="Older Suited Man Walking In The Park" loading="lazy" />
+              <div class="card-hover-overlay">
+                <span>View Full Frame</span>
+              </div>
+            </div>
+            <div class="card-info">
+              <h3>Past in the present</h3>
             </div>
           </article>
 
           <!-- Card 2 -->
-          <article class="gallery-card" data-category="atmosphere" data-src="./images/silhouette-in-tunnel.jpg" data-title="Under The City" data-meta="Silhouette In Tunnel">
+          <article class="gallery-card" data-category="urban" data-src="./images/silhouette-in-tunnel.jpg" data-title="Below the streets" data-meta="City Life">
             <div class="card-image-wrap">
               <img src="./images/silhouette-in-tunnel.jpg" alt="Commuter Silhouette In Tunnel" loading="lazy" />
               <div class="card-hover-overlay">
@@ -117,13 +145,12 @@
               </div>
             </div>
             <div class="card-info">
-              <h3>Silhouette In Tunnel</h3>
-              <p>With Glaring Summer Light Outside, The Dark is not Quiet.</p>
+              <h3>Below the streets</h3>
             </div>
           </article>
 
           <!-- Card 3 -->
-          <article class="gallery-card" data-category="atmosphere" data-src="./images/blue-sunrise.jpg" data-title="Blue Sunrise" data-meta="Driving Through Painted Skies">
+          <article class="gallery-card" data-category="atmosphere" data-src="./images/blue-sunrise.jpg" data-title="The Blue Hour" data-meta="Rural Scenes">
             <div class="card-image-wrap">
               <img src="./images/blue-sunrise.jpg" alt="Blue Sunrise" loading="lazy" />
               <div class="card-hover-overlay">
@@ -131,22 +158,20 @@
               </div>
             </div>
             <div class="card-info">
-              <h3>The Blue Hour</h3>
-              <p>The Painted Way To Work</p>
+              <h3>The blue hour</h3>
             </div>
           </article>
 
           <!-- Card 4 -->
-          <article class="gallery-card" data-category="conversations" data-src="./images/Camels.jpg" data-title="Caravan Study" data-meta="Natural Light · Distant Horizon">
+          <article class="gallery-card" data-category="conversations" data-src="./images/Camels.jpg" data-title="Camels chat in Cologne" data-meta="Suburbia">
             <div class="card-image-wrap">
-              <img src="./images/Camels.jpg" alt="Caravan Study" loading="lazy" />
+              <img src="./images/Camels.jpg" alt="Camels chatting" loading="lazy" />
               <div class="card-hover-overlay">
                 <span>View Full Frame</span>
               </div>
             </div>
             <div class="card-info">
-              <h3>Caravan Study</h3>
-              <p>Do You Think We Should Go?</p>
+              <h3>Camels chat in Cologne</h3>
             </div>
           </article>
 
@@ -158,8 +183,7 @@
               </div>
             </div>
             <div class="card-info">
-              <h3>Power Runner</h3>
-              <p>For Some It's Just A Walk In The Park</p>
+              <h3>Strength & confidence: Cologne Marathon 2026</h3>
             </div>
           </article>
 
@@ -171,8 +195,7 @@
               </div>
             </div>
             <div class="card-info">
-              <h3>Power Runner 2</h3>
-              <p>Another Winner</p>
+              <h3>Determination: Cologne Marathon 2026</h3>
             </div>
           </article>
         </div>
@@ -183,10 +206,13 @@
     <section id="about" class="section about-section">
       <div class="container about-grid">
         <div>
-          <p class="section-eyebrow">Life Is A Feeling</p>
+          <p class="section-eyebrow">What do you look for?</p>
         </div>
         <div class="about-text">
-          <p>"I look for that sense of emotion and spirit which sets an unspoken voice - hints a story of what's both inside and outside of the image. A connection."</p>
+          <p>
+            "I search for a sense of spirit and emotion that finds an unspoken voice - hinting at a story both inside and outside the image. I want the viewer to feel invited to
+            stand with me and look through the lens."
+          </p>
           <div class="stats-row"></div>
         </div>
       </div>
@@ -197,12 +223,11 @@
       <div class="container contact-grid">
         <!-- Left Column: Direct Email Info -->
         <div class="contact-details">
-          <p class="section-eyebrow">Don't Be Shy</p>
-          <h2 class="section-title">Get in Touch</h2>
-          <p class="contact-desc">Let's Work On Your Project.</p>
+          <h2>Let's Work Together</h2>
+          <p>Weddings · Portraits · Events · Projects</p>
+          <br />
 
           <div class="email-card">
-            <span class="email-label">Direct Email</span>
             <a href="mailto:markednoir@gmail.com" class="email-address">markednoir@gmail.com</a>
             <div class="email-actions">
               <button type="button" class="btn btn-small" id="copyEmailBtn">Copy Email Address</button>
@@ -215,7 +240,7 @@
           <form id="contactForm" class="contact-form">
             <div class="form-group">
               <label for="senderName">Your Name</label>
-              <input type="text" id="senderName" name="name" required placeholder="Joe Bloggs" />
+              <input type="text" id="senderName" name="name" required placeholder="Jane Doe" />
             </div>
 
             <div class="form-group">
@@ -225,20 +250,15 @@
 
             <div class="form-group">
               <label for="inquiryType">Subject</label>
-              <select id="inquiryType" name="subject">
-                <option value="Fine Art Print Inquiry">Fine Art Print Inquiry</option>
-                <option value="Editorial / Commission">Editorial / Commission</option>
-                <option value="Image Licensing">Image Licensing</option>
-                <option value="General Message">General Message</option>
-              </select>
+              <input type="text" id="inquiryType" name="subject" required placeholder="Portrait shoot / Event / Inquiry" />
             </div>
 
             <div class="form-group">
               <label for="senderMessage">Message</label>
-              <textarea id="senderMessage" name="message" rows="4" required placeholder="I look forward to hearing from you."></textarea>
+              <textarea id="senderMessage" name="message" rows="4" required placeholder="Let me know how I can help."></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Send Message to markednoir@gmail.com</button>
+            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Send Message</button>
             <p id="formFeedback" class="form-feedback"></p>
           </form>
         </div>
