@@ -114,23 +114,10 @@ a {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: var(--text-muted);
-  transition: color 0.2s ease;
-}
-
-.nav-link:hover {
-  color: var(--text-main);
-}
-
-.nav-cta {
-  padding: 8px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: var(--text-main);
-}
-
-.nav-cta:hover {
-  background-color: var(--text-main);
-  color: var(--bg-dark);
+  color: var(--text-main); /* Now solid white by default */
+  padding: 8px 18px; /* Adds breathing room so the box isn't touching the letters */
+  border: 1px solid transparent; /* Invisible box so the text doesn't jump on hover */
+  transition: all 0.25s ease;
 }
 
 .mobile-menu-btn {
