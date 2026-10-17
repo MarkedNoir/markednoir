@@ -623,15 +623,20 @@ a {
   color: var(--text-main);
 }
 
+.play-all-btn {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.94);
+  background: #000000; /* Absolute true OLED black */
   z-index: 200;
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 0; /* Removed padding to allow edge-to-edge expansion */
+  padding: 0;
 }
 
 .lightbox.open {
@@ -639,50 +644,193 @@ a {
 }
 
 .lightbox-content {
-  position: relative; /* Crucial: pins the button to the image */
+  position: relative;
   max-width: 95vw;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.lightbox-content img {
-  display: block;
-  max-width: 95vw;
-  max-height: 90vh; /* Huge image, with a little room left for caption */
-  object-fit: contain;
-  margin: 0 auto;
+/* --- DUAL-LAYER SLIDER STYLES --- */
+.lightbox-image-container {
+  position: relative;
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* The New High-Contrast Close Button */
-.lightbox-close {
+.lightbox-layer {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 48px; /* Big enough for older fingers! */
-  height: 48px;
+  max-width: 92vw;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+/* Starting positions (off-screen AND completely transparent) */
+.card-off-right {
+  transform: translateX(100vw);
+  opacity: 0;
+}
+
+.card-off-left {
+  transform: translateX(-100vw);
+  opacity: 0;
+}
+
+/* The center position the new photo glides and fades into */
+.card-center {
+  transform: translateX(0);
+  opacity: 1; /* Ends fully visible */
+  /* Both the movement and the fade happen simultaneously over 1.2s */
+  transition:
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.2s ease-out;
+}
+
+/* The old photo dissolving into the darkness underneath */
+.card-exit-fade {
+  opacity: 0;
+  /* Matches the exact 0.9s timing of the incoming photo */
+  transition: opacity 0.9s ease-out;
+}
+
+/* --- 3-COLUMN BOTTOM BAR --- */
+.lightbox-bottom-bar {
+  width: 100%;
+  max-width: 92vw;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-top: 16px;
+  gap: 20px;
+}
+
+.lightbox-col-left {
+  text-align: left;
+  min-width: 0;
+}
+
+#lightboxTitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.lightbox-col-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Minimalist Inky Black Circle Controls */
+.lightbox-btn {
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background-color: #000000;
+  background-color: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #ffffff;
-  border: 2px solid #ffffff; /* Ensures it never blends into a dark photo */
-  font-size: 2rem;
-  line-height: 1;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-.lightbox-close:hover {
-  background-color: #222222;
-  transform: scale(1.05);
+.lightbox-btn:hover {
+  background-color: #ffffff;
+  color: #050505;
+  border-color: #ffffff;
+  transform: translateY(-2px);
 }
 
-.lightbox-caption {
-  margin-top: 14px;
+.lightbox-col-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lightbox-exit {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+  font-family: inherit;
+  transition: color 0.2s ease;
+}
+
+.lightbox-exit:hover {
+  color: #ffffff;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .lightbox-bottom-bar {
+    grid-template-columns: 1fr; /* Stacks everything in one column on tiny screens */
+    text-align: center;
+    gap: 16px;
+  }
+
+  .lightbox-col-left,
+  .lightbox-col-right {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .lightbox-content img {
+    max-height: 72vh;
+  }
+}
+
+/* Minimalist Inky Black Circle Controls */
+.lightbox-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%; /* Forces the perfect circle */
+  background-color: #050505; /* Inky black background */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Faint white border */
+  color: #ffffff; /* White play/arrow indicators */
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lightbox-btn:hover {
+  background-color: #ffffff;
+  color: #050505;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .lightbox-bottom-bar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+  }
+
+  .lightbox-caption {
+    text-align: center;
+  }
+
+  .lightbox-content img {
+    max-height: 72vh;
+  }
 }
 
 /* =========================================================

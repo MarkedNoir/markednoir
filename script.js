@@ -40,7 +40,7 @@ document.querySelectorAll(".nav-link").forEach((link) => {
 // =========================================================
 // 3. GALLERY CATEGORY FILTERING
 // =========================================================
-const filterButtons = document.querySelectorAll(".filter-btn");
+const filterButtons = document.querySelectorAll(".filter-btn[data-filter]");
 const galleryCards = document.querySelectorAll(".gallery-card");
 
 filterButtons.forEach((button) => {
@@ -62,44 +62,165 @@ filterButtons.forEach((button) => {
 });
 
 // =========================================================
-// 4. FULL-SCREEN LIGHTBOX VIEWER
+// 4. FULL-SCREEN LIGHTBOX & SLIDESHOW VIEWER
 // =========================================================
 const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
+const lightboxImageContainer = document.getElementById("lightboxImageContainer");
 const lightboxTitle = document.getElementById("lightboxTitle");
-const lightboxMeta = document.getElementById("lightboxMeta");
 const lightboxClose = document.getElementById("lightboxClose");
 
+const playAllBtn = document.getElementById("playAllBtn");
+const lightboxPrev = document.getElementById("lightboxPrev");
+const lightboxNext = document.getElementById("lightboxNext");
+const lightboxPlayToggle = document.getElementById("lightboxPlayToggle");
+
+let visibleCards = [];
+let currentIndex = 0;
+let isPlaying = false;
+let slideInterval = null;
+let isAnimating = false; // Prevents fast-clicking from breaking the stack
+const SLIDE_TIME = 4500; // 4.5 seconds per photo
+
+function updateVisibleCards() {
+  visibleCards = Array.from(galleryCards).filter((card) => !card.classList.contains("hidden"));
+}
+
+// Display a photo, sliding it over while the current one fades
+function showPhoto(index, direction = "next") {
+  if (visibleCards.length === 0 || isAnimating) return;
+
+  const isOpening = !lightbox.classList.contains("open");
+  currentIndex = (index + visibleCards.length) % visibleCards.length;
+  const card = visibleCards[currentIndex];
+
+  // 1. Create the new image layer
+  const newImg = document.createElement("img");
+  newImg.className = "lightbox-layer";
+
+  if (isOpening) {
+    newImg.classList.add("card-center");
+  } else {
+    newImg.classList.add(direction === "next" ? "card-off-right" : "card-off-left");
+  }
+
+  newImg.src = card.getAttribute("data-src");
+  lightboxTitle.textContent = card.getAttribute("data-title");
+
+  // 2. Wait for the new image to decode
+  newImg.onload = () => {
+    // Identify the currently visible photo(s) before dropping the new one in
+    const oldImages = Array.from(lightboxImageContainer.children);
+
+    // Drop the new photo on top
+    lightboxImageContainer.appendChild(newImg);
+
+    if (isOpening) return;
+
+    isAnimating = true;
+
+    // Force browser to register starting positions
+    void newImg.offsetWidth;
+
+    // 3. Trigger the slow slide for the NEW photo
+    newImg.className = "lightbox-layer card-center";
+
+    // 4. Trigger the slow fade-out for the OLD photo underneath
+    oldImages.forEach((img) => {
+      img.classList.add("card-exit-fade");
+    });
+
+    // 5. Delete the old photo after the long 900ms transition finishes
+    setTimeout(() => {
+      oldImages.forEach((img) => img.remove());
+      isAnimating = false;
+    }, 900);
+  };
+
+  // Preload next photo silently
+  const nextIndex = (currentIndex + 1) % visibleCards.length;
+  const preloadImg = new Image();
+  preloadImg.src = visibleCards[nextIndex].getAttribute("data-src");
+}
+
+function startSlideshow() {
+  isPlaying = true;
+  lightboxPlayToggle.innerHTML = "&#10074;&#10074;"; // Pause icon
+  clearInterval(slideInterval);
+  slideInterval = setInterval(() => {
+    showPhoto(currentIndex + 1, "next");
+  }, SLIDE_TIME);
+}
+
+function stopSlideshow() {
+  isPlaying = false;
+  lightboxPlayToggle.innerHTML = "&#9654;"; // Play icon
+  clearInterval(slideInterval);
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  stopSlideshow();
+  setTimeout(() => {
+    lightboxImageContainer.innerHTML = "";
+    isAnimating = false;
+  }, 300);
+}
+
+// --- Event Listeners ---
 galleryCards.forEach((card) => {
   card.addEventListener("click", () => {
-    lightboxImg.src = card.getAttribute("data-src");
-    lightboxTitle.textContent = card.getAttribute("data-title");
-    lightboxMeta.textContent = card.getAttribute("data-meta");
+    updateVisibleCards();
+    const clickedIndex = visibleCards.indexOf(card);
+    showPhoto(clickedIndex, "next");
+    stopSlideshow();
     lightbox.classList.add("open");
   });
 });
 
-// 1. Close when clicking the 'X' button
-lightboxClose.addEventListener("click", () => {
-  lightbox.classList.remove("open");
+playAllBtn.addEventListener("click", () => {
+  updateVisibleCards();
+  if (visibleCards.length === 0) return;
+  showPhoto(0, "next");
+  lightbox.classList.add("open");
+  startSlideshow();
 });
 
-// 2. Close when clicking the dark background outside the photo
-lightbox.addEventListener("click", (event) => {
-  if (event.target === lightbox) {
-    lightbox.classList.remove("open");
-  }
-});
-
-// 3. DO NOTHING if the user clicks the photo (allows long-press to save)
-lightboxImg.addEventListener("click", (event) => {
+lightboxPrev.addEventListener("click", (event) => {
   event.stopPropagation();
+  stopSlideshow();
+  showPhoto(currentIndex - 1, "prev");
 });
 
-// 4. Close when pressing the Escape key
+lightboxNext.addEventListener("click", (event) => {
+  event.stopPropagation();
+  stopSlideshow();
+  showPhoto(currentIndex + 1, "next");
+});
+
+lightboxPlayToggle.addEventListener("click", (event) => {
+  event.stopPropagation();
+  if (isPlaying) stopSlideshow();
+  else startSlideshow();
+});
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (event) => {
+  if (event.target === lightbox) closeLightbox();
+});
+
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && lightbox.classList.contains("open")) {
-    lightbox.classList.remove("open");
+  if (!lightbox.classList.contains("open")) return;
+  if (event.key === "Escape") closeLightbox();
+  else if (event.key === "ArrowRight") {
+    stopSlideshow();
+    showPhoto(currentIndex + 1, "next");
+  } else if (event.key === "ArrowLeft") {
+    stopSlideshow();
+    showPhoto(currentIndex - 1, "prev");
+  } else if (event.key === " ") {
+    event.preventDefault();
+    if (isPlaying) stopSlideshow();
+    else startSlideshow();
   }
 });
 
@@ -150,9 +271,8 @@ document.addEventListener("click", (event) => {
 });
 
 // =========================================================
-// 5. DELETE WHEN PORTRAITS ARE AVAILABLE HERE AND CSS AND HTML
+// 7. DELETE WHEN PORTRAITS ARE AVAILABLE HERE AND CSS AND HTML
 // =========================================================
-
 const portraitsBtn = document.getElementById("portraitsBtn");
 const toast = document.getElementById("toastNotification");
 let toastTimeout;

@@ -79,6 +79,7 @@
 
           <!-- Category Filter Buttons -->
           <div class="filter-group">
+            <button class="filter-btn play-all-btn" id="playAllBtn" aria-label="Play all photos">&#9654; Play All</button>
             <button class="filter-btn active" data-filter="all">All Works</button>
             <button class="filter-btn" data-filter="urban">Cities & Towns</button>
             <button class="filter-btn" data-filter="atmosphere">Atmosphere</button>
@@ -340,17 +341,32 @@
 
     <!-- ================= FULL-SCREEN LIGHTBOX MODAL ================= -->
     <div id="lightbox" class="lightbox" aria-hidden="true">
+      <!-- Center Content Container -->
       <div class="lightbox-content">
-        <!-- Close button is now INSIDE the content container -->
-        <button class="lightbox-close" id="lightboxClose" aria-label="Close Viewer">&times;</button>
-        <img id="lightboxImg" src="" alt="" />
-        <div class="lightbox-caption">
-          <h3 id="lightboxTitle"></h3>
-          <p id="lightboxMeta"></p>
+        <!-- DUAL-LAYER IMAGE CONTAINER -->
+        <div id="lightboxImageContainer" class="lightbox-image-container"></div>
+
+        <!-- 3-Column Bottom Bar -->
+        <div class="lightbox-bottom-bar">
+          <!-- Column 1: Small Title -->
+          <div class="lightbox-col-left">
+            <h3 id="lightboxTitle"></h3>
+          </div>
+
+          <!-- Column 2: Centered Controls -->
+          <div class="lightbox-col-center">
+            <button class="lightbox-btn" id="lightboxPrev" aria-label="Previous Photo">&#10094;</button>
+            <button class="lightbox-btn" id="lightboxPlayToggle" aria-label="Toggle Autoplay">&#9654;</button>
+            <button class="lightbox-btn" id="lightboxNext" aria-label="Next Photo">&#10095;</button>
+          </div>
+
+          <!-- Column 3: Exit Button -->
+          <div class="lightbox-col-right">
+            <button class="lightbox-exit" id="lightboxClose" aria-label="Close Viewer">Exit</button>
+          </div>
         </div>
       </div>
     </div>
-
     <!-- Main JavaScript File -->
     <script src="script.js"></script>
   </body>
