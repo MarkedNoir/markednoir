@@ -159,6 +159,7 @@ function stopSlideshow() {
 
 function closeLightbox() {
   lightbox.classList.remove("open");
+  document.body.style.overflow = ""; // Unlocks normal website scrolling
   stopSlideshow();
   setTimeout(() => {
     lightboxImageContainer.innerHTML = "";
@@ -174,6 +175,7 @@ galleryCards.forEach((card) => {
     showPhoto(clickedIndex, "next");
     stopSlideshow();
     lightbox.classList.add("open");
+    document.body.style.overflow = "hidden"; // Freezes the website behind the gallery
   });
 });
 
@@ -182,6 +184,7 @@ playAllBtn.addEventListener("click", () => {
   if (visibleCards.length === 0) return;
   showPhoto(0, "next");
   lightbox.classList.add("open");
+  document.body.style.overflow = "hidden"; // Freezes the website behind the gallery
   startSlideshow();
 });
 

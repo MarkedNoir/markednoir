@@ -631,12 +631,15 @@ a {
 .lightbox {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100dvh;
   background: #000000; /* Absolute true OLED black */
   z-index: 200;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 0;
+  touch-action: none; /* Stops vertical swipes anywhere in the darkroom from scrolling the page behind */
 }
 
 .lightbox.open {
@@ -655,18 +658,18 @@ a {
 .lightbox-image-container {
   position: relative;
   width: 100vw;
-  height: 80vh;
+  height: 75dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  touch-action: pan-y;
+  touch-action: none; /* Prevents browser scroll-chaining and address bar collapse */
 }
 
 .lightbox-layer {
   position: absolute;
   max-width: 92vw;
-  max-height: 80vh;
+  max-height: 75dvh; /* Matches the container */
   object-fit: contain;
 }
 
@@ -777,6 +780,64 @@ a {
 }
 
 /* Mobile responsive adjustments */
+
+/* --- MOBILE PORTRAIT VIEWPORT FIX --- */
+@media (max-width: 600px) and (orientation: portrait) {
+  .lightbox {
+    height: 100dvh; /* Measures strictly inside the Chrome address bar */
+  }
+
+  /* Shrink the empty box so the 3-row footer fits comfortably */
+  .lightbox-image-container {
+    height: 56dvh;
+  }
+
+  .lightbox-layer {
+    max-height: 56dvh;
+  }
+
+  /* Tighten spacing between title, buttons, and exit */
+  .lightbox-bottom-bar {
+    margin-top: 10px;
+    gap: 10px;
+    margin-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+}
+
+/* --- PHONE LANDSCAPE ORIENTATION FIX --- */
+@media (orientation: landscape) and (max-height: 500px) {
+  .lightbox-content {
+    max-width: 96vw;
+  }
+
+  /* Shrink photo height to give thumb controls priority */
+  .lightbox-image-container {
+    height: 62dvh;
+  }
+
+  .lightbox-layer {
+    max-height: 62dvh;
+  }
+
+  /* Tighten vertical spacing */
+  .lightbox-bottom-bar {
+    margin-top: 8px;
+    gap: 12px;
+  }
+
+  /* Make buttons slightly more compact on short displays */
+  .lightbox-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .lightbox-exit {
+    padding: 6px 14px;
+    font-size: 0.7rem;
+  }
+}
+
 @media (max-width: 600px) {
   .lightbox-bottom-bar {
     grid-template-columns: 1fr; /* Stacks everything in one column on tiny screens */
@@ -910,4 +971,27 @@ a {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(-50%) translateY(0);
+}
+
+/* --- MOBILE PORTRAIT VIEWPORT & SPACING FIX --- */
+@media (max-width: 600px) and (orientation: portrait) {
+  .lightbox {
+    height: 100dvh;
+  }
+
+  /* Compact the image container so the 3-row footer sits well above the bottom */
+  .lightbox-image-container {
+    height: 56dvh;
+  }
+
+  .lightbox-layer {
+    max-height: 56dvh;
+  }
+
+  /* Tighten spacing between title, circle buttons, and exit */
+  .lightbox-bottom-bar {
+    margin-top: 10px;
+    gap: 10px;
+    margin-bottom: max(14px, env(safe-area-inset-bottom));
+  }
 }
