@@ -224,6 +224,45 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+// --- Touch Swipe Navigation ---
+let touchStartX = 0;
+let touchEndX = 0;
+const SWIPE_THRESHOLD = 50; // Minimum drag distance in pixels to trigger a change
+
+lightbox.addEventListener(
+  "touchstart",
+  (event) => {
+    touchStartX = event.changedTouches[0].clientX;
+  },
+  { passive: true },
+);
+
+lightbox.addEventListener(
+  "touchend",
+  (event) => {
+    touchEndX = event.changedTouches[0].clientX;
+    handleSwipeGesture();
+  },
+  { passive: true },
+);
+
+function handleSwipeGesture() {
+  const diffX = touchEndX - touchStartX;
+
+  // Ignore accidental tiny taps
+  if (Math.abs(diffX) < SWIPE_THRESHOLD) return;
+
+  stopSlideshow();
+
+  if (diffX < 0) {
+    // Swiped left -> Move to Next photo
+    showPhoto(currentIndex + 1, "next");
+  } else {
+    // Swiped right -> Move to Previous photo
+    showPhoto(currentIndex - 1, "prev");
+  }
+}
+
 // =========================================================
 // 5. EMAIL COPY & CONTACT FORM (markednoir@gmail.com)
 // =========================================================

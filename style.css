@@ -660,6 +660,7 @@ a {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .lightbox-layer {
