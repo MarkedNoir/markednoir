@@ -639,7 +639,7 @@ a {
   align-items: center;
   justify-content: center;
   padding: 0;
-  touch-action: none; /* Stops vertical swipes anywhere in the darkroom from scrolling the page behind */
+  touch-action: pinch-zoom; /* Stops vertical swipes but allows zoom */
 }
 
 .lightbox.open {
@@ -663,7 +663,7 @@ a {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  touch-action: none; /* Prevents browser scroll-chaining and address bar collapse */
+  touch-action: pinch-zoom; /* Stops vertical swipes but allows zoom */
 }
 
 .lightbox-layer {
@@ -779,115 +779,18 @@ a {
   transform: translateY(-2px);
 }
 
-/* Mobile responsive adjustments */
-
-/* --- MOBILE PORTRAIT VIEWPORT FIX --- */
-@media (max-width: 600px) and (orientation: portrait) {
-  .lightbox {
-    height: 100dvh; /* Measures strictly inside the Chrome address bar */
-  }
-
-  /* Shrink the empty box so the 3-row footer fits comfortably */
-  .lightbox-image-container {
-    height: 56dvh;
-  }
-
-  .lightbox-layer {
-    max-height: 56dvh;
-  }
-
-  /* Tighten spacing between title, buttons, and exit */
-  .lightbox-bottom-bar {
-    margin-top: 10px;
-    gap: 10px;
-    margin-bottom: max(14px, env(safe-area-inset-bottom));
-  }
-}
-
-/* --- PHONE LANDSCAPE ORIENTATION FIX --- */
-@media (orientation: landscape) and (max-height: 500px) {
-  .lightbox-content {
-    max-width: 96vw;
-  }
-
-  /* Shrink photo height to give thumb controls priority */
-  .lightbox-image-container {
-    height: 62dvh;
-  }
-
-  .lightbox-layer {
-    max-height: 62dvh;
-  }
-
-  /* Tighten vertical spacing */
-  .lightbox-bottom-bar {
-    margin-top: 8px;
-    gap: 12px;
-  }
-
-  /* Make buttons slightly more compact on short displays */
-  .lightbox-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 0.85rem;
-  }
-
-  .lightbox-exit {
-    padding: 6px 14px;
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .lightbox-bottom-bar {
-    grid-template-columns: 1fr; /* Stacks everything in one column on tiny screens */
-    text-align: center;
-    gap: 16px;
-  }
-
-  .lightbox-col-left,
-  .lightbox-col-right {
-    text-align: center;
-    justify-content: center;
-  }
-
-  .lightbox-content img {
-    max-height: 72vh;
-  }
-}
-
-@media (max-width: 600px) {
-  .lightbox-bottom-bar {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 14px;
-  }
-
-  .lightbox-caption {
-    text-align: center;
-  }
-
-  .lightbox-content img {
-    max-height: 72vh;
-  }
-}
-
 /* =========================================================
-   9. MOBILE RESPONSIVENESS
+   9. MOBILE RESPONSIVENESS & BREAKPOINTS
    ========================================================= */
-@media (max-width: 480px) {
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-  .hero-actions .btn {
-    width: 100%;
-    max-width: 260px;
+
+/* --- DESKTOP ONLY (769px and up) --- */
+@media (min-width: 769px) {
+  .hero-title {
+    white-space: nowrap;
   }
 }
 
+/* --- TABLET & MOBILE MENU / GRIDS (768px and down) --- */
 @media (max-width: 768px) {
   .mobile-menu-btn {
     display: flex;
@@ -936,9 +839,89 @@ a {
   }
 }
 
-@media (min-width: 769px) {
-  .hero-title {
-    white-space: nowrap;
+/* --- MOBILE PORTRAIT LIGHTBOX FIX (600px and down) --- */
+@media (max-width: 600px) {
+  .lightbox {
+    height: 100dvh; /* Measures strictly inside the Chrome address bar */
+  }
+
+  .lightbox-content {
+    max-width: 100vw; /* Full edge-to-edge width on phone screens */
+  }
+
+  /* Fits the 3-row footer comfortably while maximizing photo height */
+  .lightbox-image-container {
+    height: 62dvh;
+  }
+
+  .lightbox-layer {
+    max-width: 100vw;
+    max-height: 62dvh;
+  }
+
+  /* Stacks title, circle buttons, and exit cleanly in one column */
+  .lightbox-bottom-bar {
+    grid-template-columns: 1fr;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    gap: 10px;
+    margin-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  .lightbox-col-left,
+  .lightbox-col-right,
+  .lightbox-caption {
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* --- SMALL PHONE HERO BUTTONS (480px and down) --- */
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 260px;
+  }
+}
+
+/* --- PHONE LANDSCAPE ORIENTATION FIX (Short screens) --- */
+@media (orientation: landscape) and (max-height: 500px) {
+  .lightbox-content {
+    max-width: 96vw;
+  }
+
+  /* Shrink photo height to give thumb controls priority */
+  .lightbox-image-container {
+    height: 62dvh;
+  }
+
+  .lightbox-layer {
+    max-height: 62dvh;
+  }
+
+  /* Tighten vertical spacing */
+  .lightbox-bottom-bar {
+    margin-top: 8px;
+    gap: 12px;
+  }
+
+  /* Make buttons slightly more compact on short displays */
+  .lightbox-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .lightbox-exit {
+    padding: 6px 14px;
+    font-size: 0.7rem;
   }
 }
 /* Toast Notification */

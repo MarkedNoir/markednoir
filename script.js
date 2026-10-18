@@ -230,12 +230,18 @@ document.addEventListener("keydown", (event) => {
 // --- Touch Swipe Navigation ---
 let touchStartX = 0;
 let touchEndX = 0;
+let isPinching = false;
 const SWIPE_THRESHOLD = 50; // Minimum drag distance in pixels to trigger a change
 
 lightbox.addEventListener(
   "touchstart",
   (event) => {
-    touchStartX = event.changedTouches[0].clientX;
+    if (event.touches.length > 1) {
+      isPinching = true; // Two fingers detected: user is zooming, not swiping
+    } else {
+      isPinching = false;
+      touchStartX = event.changedTouches[0].clientX;
+    }
   },
   { passive: true },
 );
@@ -243,6 +249,7 @@ lightbox.addEventListener(
 lightbox.addEventListener(
   "touchend",
   (event) => {
+    if (isPinching) return; // Don't change photos when finishing a pinch-zoom
     touchEndX = event.changedTouches[0].clientX;
     handleSwipeGesture();
   },
